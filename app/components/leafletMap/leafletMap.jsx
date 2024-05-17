@@ -87,8 +87,8 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import markerIconUrl from "@/../node_modules/leaflet/src/images/marker.svg";
-import markerShadowUrl from "@/../node_modules/leaflet/src/images/layers.svg";
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 
 export default function Map() {
   const center = {
@@ -96,9 +96,19 @@ export default function Map() {
     lng: -0.09,
   };
 
-  function DraggableMarker() {
+  const [position, setPosition] = useState(center);
+
+  const customIcon = L.icon({
+    iconUrl: markerIconPng,
+    shadowUrl: markerShadowPng,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+
+  function DraggableMarker({ position, setPosition }) {
     const [draggable, setDraggable] = useState(false);
-    const [position, setPosition] = useState(center);
     const markerRef = useRef(null);
     const eventHandlers = useMemo(
       () => ({
@@ -109,7 +119,7 @@ export default function Map() {
           }
         },
       }),
-      []
+      [setPosition]
     );
     const toggleDraggable = useCallback(() => {
       setDraggable((d) => !d);
@@ -117,6 +127,7 @@ export default function Map() {
 
     return (
       <Marker
+        icon={customIcon}
         draggable={draggable}
         eventHandlers={eventHandlers}
         position={position}
@@ -136,6 +147,7 @@ export default function Map() {
   function LocationLogger() {
     useMapEvents({
       click: (e) => {
+        setPosition(e.latlng);
         console.log(e.latlng);
       },
     });
@@ -154,7 +166,7 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <DraggableMarker />
+        <DraggableMarker position={position} setPosition={setPosition} />
         <LocationLogger />
       </MapContainer>
     </div>
