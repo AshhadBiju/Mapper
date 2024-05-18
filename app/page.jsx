@@ -31,7 +31,7 @@ export default function Login() {
     <main className=" max-h-screen">
       <section className="flex flex-col md:flex-row md:gap-x-4 gap-y-4 h-screen w-full md:p-4 px-4 pt-0 pb-4">
         <div className="bg-white md:bg-blue-500 w-full md:w-[50%] flex justify-center items-center rounded-3xl">
-          <div className=" text-3xl md:text-5xl font-medium text-blue-500 md:text-white flex md:flex-col justify-center flex-col-reverse items-center">
+          <div className=" text-3xl md:text-5xl  text-blue-500 md:text-white flex md:flex-col justify-center flex-col-reverse items-center">
             <div className="flex justify-center">Welcome to Mapper</div>
             <Image
               src={mapBg}
@@ -208,6 +208,7 @@ export default function Login() {
             </Card>
           </div>
         </div>
+
         {/* <div className="w-full md:w-[50%] flex justify-center items-center ">
           <div className="bg-slate-400 py-10 px-5 rounded w-full">
             <div>

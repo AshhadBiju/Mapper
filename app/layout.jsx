@@ -1,9 +1,9 @@
 // import { Inter } from "next/font/google";
-import { Cinzel } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import Provider from "@/app/components/NextUIProvider";
 import "./globals.css";
 
-const cinzel = Cinzel({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Mapper",
@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={cinzel.className}>
+      <body className={montserrat.className}>
         <Provider>{children}</Provider>
       </body>
     </html>

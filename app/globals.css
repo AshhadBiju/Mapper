@@ -12,6 +12,7 @@
 
 body {
   box-sizing: border-box;
+  /* font-weight: lighter; */
 }
 
 @layer utilities {

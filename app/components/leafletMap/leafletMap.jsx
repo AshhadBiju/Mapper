@@ -1,82 +1,6 @@
-// "use client";
-// import React from "react";
-// import React, { useState, useRef, useMemo, useCallback } from "react";
-// import L from "leaflet";
-// import {
-//   MapContainer,
-//   TileLayer,
-//   Popup,
-//   Marker,
-//   SVGOverlay,
-// } from "react-leaflet";
-// import "leaflet/dist/leaflet.css";
-// import markerIconUrl from "@/../node_modules/leaflet/src/images/marker.svg";
-// import markerShadowUrl from "@/../node_modules/leaflet/src/images/layers.svg";
-
-// export default function Map() {
-//   const center = {
-//     lat: 51.505,
-//     lng: -0.09,
-//   };
-
-//   function DraggableMarker() {
-//     const [draggable, setDraggable] = useState(false);
-//     const [position, setPosition] = useState(center);
-//     const markerRef = useRef(null);
-//     const eventHandlers = useMemo(
-//       () => ({
-//         dragend() {
-//           const marker = markerRef.current;
-//           if (marker != null) {
-//             setPosition(marker.getLatLng());
-//           }
-//         },
-//       }),
-//       []
-//     );
-//     const toggleDraggable = useCallback(() => {
-//       setDraggable((d) => !d);
-//     }, []);
-
-//     return (
-//       <Marker
-//         draggable={draggable}
-//         eventHandlers={eventHandlers}
-//         position={position}
-//         ref={markerRef}
-//       >
-//         <Popup minWidth={90}>
-//           <span onClick={toggleDraggable}>
-//             {draggable
-//               ? "Marker is draggable"
-//               : "Click here to make marker draggable"}
-//           </span>
-//         </Popup>
-//       </Marker>
-//     );
-//   }
-//   return (
-//     <div>
-//       <MapContainer
-//         onClick={(e) => {
-//           console.log(e);
-//         }}
-//         center={center}
-//         zoom={13}
-//         scrollWheelZoom={false}
-//         className="min-h-screen w-full overflow-hidden"
-//       >
-//         <TileLayer
-//           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-//         />
-//         <DraggableMarker />
-//       </MapContainer>
-//     </div>
-//   );
-// }
 "use client";
 import axios from "axios";
+import Image from "next/image";
 import React, {
   useState,
   useRef,
@@ -93,6 +17,20 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { Input } from "@nextui-org/react";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  Link,
+  Button,
+} from "@nextui-org/react";
+import mapBg from "@/public/images/map-bg.svg";
+import SideHistoryMenu from "@/public/icons/side-history-menu.svg";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 
@@ -123,6 +61,7 @@ export default function Map() {
       () => ({
         dragend() {
           const marker = markerRef.current;
+          console.log("MARKERREF : ", markerRef);
           if (marker != null) {
             setPosition(marker.getLatLng());
           }
@@ -130,6 +69,7 @@ export default function Map() {
       }),
       [setPosition]
     );
+
     const toggleDraggable = useCallback(() => {
       setDraggable((d) => !d);
     }, []);
@@ -173,6 +113,7 @@ export default function Map() {
       // const address = response.data.resourceSets[0].resources[0].address;
       // setAddressData(address);
       const address = response.data.resourceSets[0].resources[0].address;
+      setAddressData(address);
       console.log("State:", address.adminDistrict);
       console.log("District:", address.adminDistrict2);
       console.log("Country:", address.countryRegion);
@@ -189,6 +130,20 @@ export default function Map() {
     }
   }, [position]);
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out",
+  ];
   return (
     <div>
       <MapContainer
@@ -204,83 +159,55 @@ export default function Map() {
         <DraggableMarker position={position} setPosition={setPosition} />
         <LocationLogger />
       </MapContainer>
+      <div className="z-[999] absolute top-1 left-16 w-80">
+        <div className="flex items-center">
+          <div className="text-2xl ">Mapper</div>
+          <Image
+            src={mapBg}
+            alt="map goes here"
+            width={50}
+            sizes="(min-width: 500px) 254px, (min-width: 780px) 147px, 254px"
+            priority={true}
+          />
+        </div>
+        <div className="-mt-3 flex flex-col gap-2">
+          <div className="">
+            <Input
+              classNames={{
+                base: "min-w-full sm:max-w-[10rem] h-10",
+                mainWrapper: "h-full",
+                input: "text-small",
+                inputWrapper: "h-full font-normal text-default-500",
+              }}
+              placeholder="Map your way"
+              size="sm"
+              type="search"
+            />
+          </div>
+          <div className="flex">
+            <div className="bg-white h-full w-full rounded-lg p-4">
+              {addressData && (
+                <div className="text-sm">
+                  <p>{addressData.formattedAddress}</p>
+                  {/* <p>{addressData.adminDistrict}</p>
+                <p>{addressData.adminDistrict2}</p> */}
+                  {/* <p>{addressData.countryRegion}</p> */}
+                </div>
+              )}
+            </div>
+          </div>
+          {/* <div>
+            <Image
+              src={SideHistoryMenu}
+              alt="map goes here"
+              width={50}
+              sizes="(min-width: 500px) 254px, (min-width: 780px) 147px, 254px"
+              priority={true}
+              className="absolute -left-16 top-24"
+            />
+          </div> */}
+        </div>
+      </div>
     </div>
   );
 }
-
-// "use client";
-// import React, { useState, useRef, useMemo, useCallback } from "react";
-// import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet";
-// import "leaflet/dist/leaflet.css";
-// import { SearchControl, OpenStreetMapProvider, Search } from "react-leaflet-search";
-// import markerIconUrl from "@/../node_modules/leaflet/src/images/marker.svg";
-// import markerShadowUrl from "@/../node_modules/leaflet/src/images/layers.svg";
-
-// export default function Map() {
-//   const center = {
-//     lat: 51.505,
-//     lng: -0.09,
-//   };
-
-//   function DraggableMarker() {
-//     const [draggable, setDraggable] = useState(false);
-//     const [position, setPosition] = useState(center);
-//     const markerRef = useRef(null);
-//     const eventHandlers = useMemo(
-//       () => ({
-//         dragend() {
-//           const marker = markerRef.current;
-//           if (marker != null) {
-//             setPosition(marker.getLatLng());
-//           }
-//         },
-//       }),
-//       []
-//     );
-//     const toggleDraggable = useCallback(() => {
-//       setDraggable((d) => !d);
-//     }, []);
-
-//     return (
-//       <Marker
-//         draggable={draggable}
-//         eventHandlers={eventHandlers}
-//         position={position}
-//         ref={markerRef}
-//       >
-//         <Popup minWidth={90}>
-//           <span onClick={toggleDraggable}>
-//             {draggable
-//               ? "Marker is draggable"
-//               : "Click here to make marker draggable"}
-//           </span>
-//         </Popup>
-//       </Marker>
-//     );
-//   }
-
-//   return (
-//     <div>
-//       <MapContainer
-//         center={center}
-//         zoom={13}
-//         scrollWheelZoom={false}
-//         className="min-h-screen w-full overflow-hidden"
-//       >
-//         <TileLayer
-//           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-//           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-//         />
-//         <SearchControl
-//           provider={new OpenStreetMapProvider()}
-//           showMarker={true}
-//           showPopup={false}
-//           popUp={this.customPopup}
-//           autoClose={true}
-//           search={false}
-//         />
-//         <DraggableMarker />
-//       </MapContainer>
-//     </div>
-//   );
-// }

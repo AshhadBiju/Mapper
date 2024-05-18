@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { Input } from "@nextui-org/react";
 import Image from "next/image";
 import { mapSearch } from "@/public/images/map-search.svg";
-import mapBg from "@/public/images/map-bg.svg";
+// import mapBg from "@/public/images/map-bg.svg";
 const DynamicMap = dynamic(
   () => import("@/app/components/leafletMap/leafletMap"),
   {
@@ -47,7 +47,7 @@ export default function Map() {
       {/* <div className="md:w-[80%] w-[100%]"> */}
       <div className="w-full">
         <DynamicMap />
-        <div className="z-[999999] absolute top-1 left-16 min-w-64">
+        {/* <div className="z-[999999] absolute top-1 left-16 min-w-64">
           <div className="flex items-center">
             <div className="text-2xl font-normal">Mapper</div>
             <Image
@@ -81,7 +81,7 @@ export default function Map() {
             />
             <br /> Place: Name
           </div>
-        </div>
+        </div> */}
       </div>
     </main>
   );
