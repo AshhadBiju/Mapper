@@ -76,8 +76,14 @@
 //   );
 // }
 "use client";
-import React, { useState, useRef, useMemo, useCallback } from "react";
-import { Input } from "@nextui-org/react";
+import axios from "axios";
+import React, {
+  useState,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import L from "leaflet";
 import {
   MapContainer,
@@ -92,11 +98,14 @@ import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 
 export default function Map() {
   const center = {
-    lat: 51.505,
-    lng: -0.09,
+    lat: 11.0662,
+    lng: 76.074,
   };
 
   const [position, setPosition] = useState(center);
+  const [addressData, setAddressData] = useState(null);
+  const mapAPIKey =
+    "AjtQMRI3xE0Q1glfO2sZBvmI8aCD8-P-O2KNe4tCPEJQVthOR6_M7dVL4LAna9qL";
 
   const customIcon = L.icon({
     iconUrl: markerIconPng,
@@ -148,11 +157,37 @@ export default function Map() {
     useMapEvents({
       click: (e) => {
         setPosition(e.latlng);
-        console.log(e.latlng);
+        // console.log(e.latlng);
       },
     });
     return null;
   }
+  useEffect(() => {
+    console.log("Marker position: ", position);
+  }, [position]);
+
+  const fetchLocationData = async (lat, lng) => {
+    const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${lng}?key=${mapAPIKey}`;
+    try {
+      const response = await axios.get(url);
+      // const address = response.data.resourceSets[0].resources[0].address;
+      // setAddressData(address);
+      const address = response.data.resourceSets[0].resources[0].address;
+      console.log("State:", address.adminDistrict);
+      console.log("District:", address.adminDistrict2);
+      console.log("Country:", address.countryRegion);
+      console.log("Location:", address.formattedAddress);
+      console.log("Postal code:", address.postalCode);
+    } catch (error) {
+      console.error("Error fetching location data:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (position) {
+      fetchLocationData(position.lat, position.lng);
+    }
+  }, [position]);
 
   return (
     <div>
