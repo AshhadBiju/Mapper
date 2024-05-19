@@ -30,7 +30,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import mapBg from "@/public/images/map-bg.svg";
-import SideHistoryMenu from "@/public/icons/side-history-menu.svg";
+import Sidemenu from "@/app/components/sidemenu/Sidemenu";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 
@@ -132,18 +132,6 @@ export default function Map() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = [
-    "Profile",
-    "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
   return (
     <div>
       <MapContainer
@@ -196,17 +184,10 @@ export default function Map() {
               )}
             </div>
           </div>
-          {/* <div>
-            <Image
-              src={SideHistoryMenu}
-              alt="map goes here"
-              width={50}
-              sizes="(min-width: 500px) 254px, (min-width: 780px) 147px, 254px"
-              priority={true}
-              className="absolute -left-16 top-24"
-            />
-          </div> */}
         </div>
+      </div>
+      <div className="absolute z-[99999999999999] top-24">
+        <Sidemenu />
       </div>
     </div>
   );
