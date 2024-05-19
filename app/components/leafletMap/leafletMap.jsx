@@ -15,33 +15,24 @@ import {
   Popup,
   Marker,
   useMapEvents,
+  useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { Input } from "@nextui-org/react";
-import {
-  Navbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-  Link,
-  Button,
-} from "@nextui-org/react";
 import mapBg from "@/public/images/map-bg.svg";
 import Sidemenu from "@/app/components/sidemenu/Sidemenu";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
 
 export default function Map() {
-  const center = {
+  const initialCenter = {
     lat: 11.0662,
     lng: 76.074,
   };
 
-  const [position, setPosition] = useState(center);
+  const [position, setPosition] = useState(initialCenter);
   const [addressData, setAddressData] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const mapAPIKey =
     "AjtQMRI3xE0Q1glfO2sZBvmI8aCD8-P-O2KNe4tCPEJQVthOR6_M7dVL4LAna9qL";
 
@@ -57,17 +48,19 @@ export default function Map() {
   function DraggableMarker({ position, setPosition }) {
     const [draggable, setDraggable] = useState(false);
     const markerRef = useRef(null);
+    const map = useMap();
     const eventHandlers = useMemo(
       () => ({
         dragend() {
           const marker = markerRef.current;
-          console.log("MARKERREF : ", markerRef);
           if (marker != null) {
-            setPosition(marker.getLatLng());
+            const newPos = marker.getLatLng();
+            setPosition(newPos);
+            map.setView(newPos);
           }
         },
       }),
-      [setPosition]
+      [setPosition, map]
     );
 
     const toggleDraggable = useCallback(() => {
@@ -94,14 +87,15 @@ export default function Map() {
   }
 
   function LocationLogger() {
-    useMapEvents({
+    const map = useMapEvents({
       click: (e) => {
         setPosition(e.latlng);
-        // console.log(e.latlng);
+        map.setView(e.latlng);
       },
     });
     return null;
   }
+
   useEffect(() => {
     console.log("Marker position: ", position);
   }, [position]);
@@ -110,8 +104,6 @@ export default function Map() {
     const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${lng}?key=${mapAPIKey}`;
     try {
       const response = await axios.get(url);
-      // const address = response.data.resourceSets[0].resources[0].address;
-      // setAddressData(address);
       const address = response.data.resourceSets[0].resources[0].address;
       setAddressData(address);
       console.log("State:", address.adminDistrict);
@@ -130,12 +122,34 @@ export default function Map() {
     }
   }, [position]);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const fetchLocationByQuery = async (query) => {
+    const url = `http://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
+      query
+    )}?key=${mapAPIKey}`;
+    try {
+      const response = await axios.get(url);
+      const resources = response.data.resourceSets[0].resources;
+      if (resources.length > 0) {
+        const location = resources[0].point.coordinates;
+        const newLatLng = { lat: location[0], lng: location[1] };
+        setPosition(newLatLng);
+      } else {
+        console.error("No location found for the query:", query);
+      }
+    } catch (error) {
+      console.error("Error fetching location by query:", error);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    fetchLocationByQuery(searchQuery);
+  };
 
   return (
     <div>
       <MapContainer
-        center={center}
+        center={position}
         zoom={13}
         scrollWheelZoom={false}
         className="min-h-screen w-full overflow-hidden"
@@ -158,7 +172,7 @@ export default function Map() {
             priority={true}
           />
         </div>
-        <div className="-mt-3 flex flex-col gap-2">
+        <form onSubmit={handleSearch} className="-mt-3 flex flex-col gap-2">
           <div className="">
             <Input
               classNames={{
@@ -170,6 +184,8 @@ export default function Map() {
               placeholder="Map your way"
               size="sm"
               type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
           <div className="flex">
@@ -177,16 +193,13 @@ export default function Map() {
               {addressData && (
                 <div className="text-sm">
                   <p>{addressData.formattedAddress}</p>
-                  {/* <p>{addressData.adminDistrict}</p>
-                <p>{addressData.adminDistrict2}</p> */}
-                  {/* <p>{addressData.countryRegion}</p> */}
                 </div>
               )}
             </div>
           </div>
-        </div>
+        </form>
       </div>
-      <div className="absolute z-[99999999999999] top-24">
+      <div className="absolute z-[99999999999999] top-24 bg-transparent">
         <Sidemenu />
       </div>
     </div>

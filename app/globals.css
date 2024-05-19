@@ -2,21 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-}
-
 @media (prefers-color-scheme: dark) {
-  :root {
-  }
 }
 
 body {
   box-sizing: border-box;
   /* font-weight: lighter; */
 }
-.NavbarMenu {
-  --navbar-height: 0rem;
-}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
