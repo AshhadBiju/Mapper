@@ -1,4 +1,6 @@
 "use client";
+import db from "@/app/firebase";
+import { onSnapshot, collection, addDoc } from "firebase/firestore";
 import axios from "axios";
 import Image from "next/image";
 import React, {
@@ -122,6 +124,24 @@ export default function Map() {
     }
   }, [position]);
 
+  // const fetchLocationByQuery = async (query) => {
+  //   const url = `http://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
+  //     query
+  //   )}?key=${mapAPIKey}`;
+  //   try {
+  //     const response = await axios.get(url);
+  //     const resources = response.data.resourceSets[0].resources;
+  //     if (resources.length > 0) {
+  //       const location = resources[0].point.coordinates;
+  //       const newLatLng = { lat: location[0], lng: location[1] };
+  //       setPosition(newLatLng);
+  //     } else {
+  //       console.error("No location found for the query:", query);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching location by query:", error);
+  //   }
+  // };
   const fetchLocationByQuery = async (query) => {
     const url = `http://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
       query
@@ -133,6 +153,13 @@ export default function Map() {
         const location = resources[0].point.coordinates;
         const newLatLng = { lat: location[0], lng: location[1] };
         setPosition(newLatLng);
+
+        // Add the new location to the Firestore database
+        await addDoc(collection(db, "location"), {
+          address: query,
+          lat: location[0],
+          lng: location[1],
+        });
       } else {
         console.error("No location found for the query:", query);
       }
@@ -145,6 +172,21 @@ export default function Map() {
     e.preventDefault();
     fetchLocationByQuery(searchQuery);
   };
+  // const [locationData, setLocationData] = useState([]);
+  // console.log(locationData);
+  // useEffect(
+  //   () =>
+  //     onSnapshot(collection(db, "location"), (snapshot) =>
+  //       setLocationData(snapshot.docs.map((doc) => doc.data()))
+  //     ),
+  //   []
+  // );
+
+  // const handleNew = async () => {
+  //   const collectionRef = collection(db, "location");
+  //   const payload = { name: "Black", value: "#000" };
+  //   await addDoc(collectionRef, payload);
+  // };
 
   return (
     <div>
@@ -173,7 +215,7 @@ export default function Map() {
           />
         </div>
         <form onSubmit={handleSearch} className="-mt-3 flex flex-col gap-2">
-          <div className="">
+          <div>
             <Input
               classNames={{
                 base: "min-w-full sm:max-w-[10rem] h-10",
@@ -181,7 +223,7 @@ export default function Map() {
                 input: "text-small",
                 inputWrapper: "h-full font-normal text-default-500",
               }}
-              placeholder="Map your way"
+              placeholder="Press Enter to Map away"
               size="sm"
               type="search"
               value={searchQuery}
@@ -199,7 +241,7 @@ export default function Map() {
           </div>
         </form>
       </div>
-      <div className="absolute z-[99999999999999] top-24 bg-transparent">
+      <div className="absolute z-[99999999999999] top-20 bg-transparent rounded-2xl p-0">
         <Sidemenu />
       </div>
     </div>

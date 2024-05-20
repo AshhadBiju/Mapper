@@ -208,65 +208,6 @@ export default function Login() {
             </Card>
           </div>
         </div>
-
-        {/* <div className="w-full md:w-[50%] flex justify-center items-center ">
-          <div className="bg-slate-400 py-10 px-5 rounded w-full">
-            <div>
-              <h1 class="text-white text-xl md:text-3xl font-bold mb-5">
-                Sign up
-              </h1>
-            </div>
-
-            <form onSubmit={handleLogin} class="space-y-4">
-              <div>
-                <input
-                  type="email"
-                  placeholder="Username"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  class="w-full px-4 py-3 rounded-lg bg-white text-black focus:outline-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  class="w-full px-4 py-3 rounded-lg bg-white text-black focus:outline-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  class="w-full px-4 py-3 rounded-lg bg-white text-black focus:outline-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  class="w-full px-4 py-3 rounded-lg bg-white text-black focus:outline-blue-500"
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                class="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold transition duration-300 hover:bg-blue-600 "
-              >
-                Create mapper account
-              </button>
-            </form>
-          </div>
-        </div> */}
       </section>
     </main>
   );

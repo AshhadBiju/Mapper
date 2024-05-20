@@ -1,5 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import db from "@/app/firebase";
+import { onSnapshot, collection, doc, deleteDoc } from "firebase/firestore";
 import {
   Navbar,
   NavbarContent,
@@ -10,47 +12,54 @@ import {
   Button,
 } from "@nextui-org/react";
 
-// Example data fetching function (replace with actual data fetching logic)
-const fetchHistory = () => [
-  "New York",
-  "Los Angeles",
-  "Chicago",
-  "Houston",
-  "Phoenix",
-];
-
 export default function App() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [history, setHistory] = React.useState(fetchHistory());
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [locationData, setLocationData] = useState([{ name: "..." }]);
 
-  const handleDeleteItem = (item) => {
-    setHistory((prevHistory) => prevHistory.filter((i) => i !== item));
-  };
+  console.log(locationData);
 
-  const handleClearHistory = () => {
-    setHistory([]);
+  //  GET
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "location"), (snapshot) => {
+      setLocationData(
+        snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  //  DELETE
+  const handleDeleteItem = async (id) => {
+    await deleteDoc(doc(db, "location", id));
+    setLocationData((prevData) => prevData.filter((item) => item.id !== id));
   };
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      isBlurred={false}
+      className="bg-transparent"
+    >
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
         />
       </NavbarContent>
 
-      <NavbarMenu className="z-[99999999999999999999] top-40 md:w-[20%] w-full overflow-scroll">
-        {history.length > 0 ? (
-          history.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+      <NavbarMenu className="z-[99999999999999999999] top-44 md:w-96 w-full overflow-scroll">
+        <h1 className="font-medium text-xl">Recent History</h1>
+        {locationData.length > 0 ? (
+          locationData.map((locationDataItem) => (
+            <NavbarMenuItem key={locationDataItem.id}>
               <div className="flex justify-between items-center w-full">
-                <span>{item}</span>
+                <span>{locationDataItem.address}</span>
                 <Button
                   auto
                   light
-                  size="sm"
-                  color="error"
-                  onClick={() => handleDeleteItem(item)}
+                  size="md"
+                  className="text-red-500"
+                  onClick={() => handleDeleteItem(locationDataItem.id)}
                 >
                   Delete
                 </Button>
@@ -60,13 +69,6 @@ export default function App() {
         ) : (
           <NavbarMenuItem>
             <span>No search history found.</span>
-          </NavbarMenuItem>
-        )}
-        {history.length > 0 && (
-          <NavbarMenuItem>
-            <Button auto flat color="warning" onClick={handleClearHistory}>
-              Clear All History
-            </Button>
           </NavbarMenuItem>
         )}
       </NavbarMenu>
