@@ -103,7 +103,7 @@ export default function Map() {
   }, [position]);
 
   const fetchLocationData = async (lat, lng) => {
-    const url = `http://dev.virtualearth.net/REST/v1/Locations/${lat},${lng}?key=${mapAPIKey}`;
+    const url = `https://dev.virtualearth.net/REST/v1/Locations/${lat},${lng}?key=${mapAPIKey}`;
     try {
       const response = await axios.get(url);
       const address = response.data.resourceSets[0].resources[0].address;
@@ -125,7 +125,7 @@ export default function Map() {
   }, [position]);
 
   const fetchLocationByQuery = async (query) => {
-    const url = `http://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
+    const url = `https://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
       query
     )}?key=${mapAPIKey}`;
     try {
@@ -154,21 +154,6 @@ export default function Map() {
     e.preventDefault();
     fetchLocationByQuery(searchQuery);
   };
-  // const [locationData, setLocationData] = useState([]);
-  // console.log(locationData);
-  // useEffect(
-  //   () =>
-  //     onSnapshot(collection(db, "location"), (snapshot) =>
-  //       setLocationData(snapshot.docs.map((doc) => doc.data()))
-  //     ),
-  //   []
-  // );
-
-  // const handleNew = async () => {
-  //   const collectionRef = collection(db, "location");
-  //   const payload = { name: "Black", value: "#000" };
-  //   await addDoc(collectionRef, payload);
-  // };
 
   return (
     <div>

@@ -1,5 +1,5 @@
 "use client";
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Tabs,
@@ -18,7 +18,15 @@ import Signup from "@/app/components/sign-up";
 
 export default function Home() {
   const [selected, setSelected] = useState("login");
-  const notify = () => toast("Here is your toast.");
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/map");
+    }
+  }, [router]);
+
   return (
     <main className=" max-h-screen">
       <section className="flex flex-col md:flex-row md:gap-x-4 gap-y-4 h-screen w-full md:p-4 px-4 pt-0 pb-4">
