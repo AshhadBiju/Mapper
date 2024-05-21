@@ -1,11 +1,13 @@
 "use client";
+import { setCookie } from "nookies";
 import { auth } from "@/app/firebase";
+// import Link from "next/link";
 import { useState, useEffect } from "react";
 import {
   Tabs,
   Tab,
-  Input,
   Link,
+  Input,
   Button,
   Card,
   CardBody,
@@ -15,21 +17,33 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  //   console.log(loginEmail);
-  //   console.log(loginPassword);
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Login Success");
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const token = await userCredential.user.getIdToken();
+      console.log("token:", token);
+      localStorage.setItem("token", token);
+      toast.success("Login Success", {
+        position: "top-center",
+        autoClose: 2000,
+        onClose: () => router.push("/map"),
+      });
     } catch (error) {
-      toast.warning("Login Failed");
+      toast.warning("Login Failed", {
+        position: "top-center",
+      });
     }
   };
 
