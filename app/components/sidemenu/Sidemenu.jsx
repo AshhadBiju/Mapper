@@ -37,7 +37,7 @@ export default function App() {
     setLocationData((prevData) => prevData.filter((item) => item.id !== id));
   };
 
-  // Logout function
+  // LOGOUT
   const handleLogout = () => {
     const logoutConfirmed = window.confirm("Are you sure you want to logout?");
     if (logoutConfirmed) {

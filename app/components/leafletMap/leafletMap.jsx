@@ -25,6 +25,7 @@ import mapBg from "@/public/images/map-bg.svg";
 import Sidemenu from "@/app/components/sidemenu/Sidemenu";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
+import mapAPIKey from "@/app/utils/mapApiKey";
 
 export default function Map() {
   const initialCenter = {
@@ -35,7 +36,7 @@ export default function Map() {
   const [position, setPosition] = useState(initialCenter);
   const [addressData, setAddressData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const mapAPIKey = process.env.NEXT_PUBLIC_BING_MAPS_API_KEY;
+  // const mapAPIKey = process.env.NEXT_PUBLIC_BING_MAPS_API_KEY;
 
   const customIcon = L.icon({
     iconUrl: markerIconPng,

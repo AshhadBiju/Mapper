@@ -20,6 +20,7 @@ export default function Signup() {
       console.log("Passwords do not match");
       return;
     }
+
     try {
       await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
       const user = auth.currentUser;
