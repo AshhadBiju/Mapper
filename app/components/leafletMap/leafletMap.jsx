@@ -35,8 +35,7 @@ export default function Map() {
   const [position, setPosition] = useState(initialCenter);
   const [addressData, setAddressData] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const mapAPIKey =
-    "AjtQMRI3xE0Q1glfO2sZBvmI8aCD8-P-O2KNe4tCPEJQVthOR6_M7dVL4LAna9qL";
+  const mapAPIKey = process.env.NEXT_PUBLIC_BING_MAPS_API_KEY;
 
   const customIcon = L.icon({
     iconUrl: markerIconPng,
