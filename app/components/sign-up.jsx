@@ -78,7 +78,7 @@ export default function Signup() {
         onChange={(e) => setSignupConfirmPassword(e.target.value)}
       />
       <p className="text-center text-xl">
-        Already have an account?
+        Have an account ?
         <Link size="lg" className="ml-2 cursor-pointer hover:text-blue-900">
           Login
         </Link>
@@ -91,7 +91,7 @@ export default function Signup() {
           size="md"
           type="submit"
         >
-          Sign up to enter Mapper
+          Sign up
         </Button>
       </div>
       <ToastContainer />

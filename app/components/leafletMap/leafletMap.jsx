@@ -23,8 +23,7 @@ import "leaflet/dist/leaflet.css";
 import { Input } from "@nextui-org/react";
 import mapBg from "@/public/images/map-bg.svg";
 import Sidemenu from "@/app/components/sidemenu/Sidemenu";
-import markerIconPng from "leaflet/dist/images/marker-icon.png";
-import markerShadowPng from "leaflet/dist/images/marker-shadow.png";
+import mapMarker from "@/public/images/map-marker.svg";
 // import mapAPIKey from "@/app/utils/mapApiKey";
 
 export default function Map() {
@@ -38,14 +37,14 @@ export default function Map() {
   const [searchQuery, setSearchQuery] = useState("");
   const mapAPIKey = process.env.NEXT_PUBLIC_BING_MAPS_API_KEY;
 
-  const customIcon = L.icon({
-    iconUrl: markerIconPng,
-    shadowUrl: markerShadowPng,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41],
-  });
+  // const customIcon = L.icon({
+  //   iconUrl: markerIconPng,
+  //   shadowUrl: markerShadowPng,
+  //   iconSize: [25, 41],
+  //   iconAnchor: [12, 41],
+  //   popupAnchor: [1, -34],
+  //   shadowSize: [41, 41],
+  // });
 
   function DraggableMarker({ position, setPosition }) {
     const [draggable, setDraggable] = useState(false);
@@ -71,18 +70,16 @@ export default function Map() {
 
     return (
       <Marker
-        icon={customIcon}
-        draggable={draggable}
+        icon={L.divIcon({
+          html: `<img src=${mapMarker.src} alt="marker" />`,
+        })}
+        draggable={true}
         eventHandlers={eventHandlers}
         position={position}
         ref={markerRef}
       >
         <Popup minWidth={90}>
-          <span onClick={toggleDraggable}>
-            {draggable
-              ? "Marker is draggable"
-              : "Click here to make marker draggable"}
-          </span>
+          <span onClick={toggleDraggable}>{draggable}</span>
         </Popup>
       </Marker>
     );
@@ -99,7 +96,7 @@ export default function Map() {
   }
 
   useEffect(() => {
-    console.log("Marker position: ", position);
+    // console.log("Marker position: ", position);
   }, [position]);
 
   const fetchLocationData = async (lat, lng) => {
@@ -108,11 +105,11 @@ export default function Map() {
       const response = await axios.get(url);
       const address = response.data.resourceSets[0].resources[0].address;
       setAddressData(address);
-      console.log("State:", address.adminDistrict);
-      console.log("District:", address.adminDistrict2);
-      console.log("Country:", address.countryRegion);
-      console.log("Location:", address.formattedAddress);
-      console.log("Postal code:", address.postalCode);
+      // console.log("State:", address.adminDistrict);
+      // console.log("District:", address.adminDistrict2);
+      // console.log("Country:", address.countryRegion);
+      // console.log("Location:", address.formattedAddress);
+      // console.log("Postal code:", address.postalCode);
     } catch (error) {
       console.error("Error fetching location data:", error);
     }
@@ -136,7 +133,7 @@ export default function Map() {
         const newLatLng = { lat: location[0], lng: location[1] };
         setPosition(newLatLng);
 
-        // Add the new location to the Firestore database
+        // ADD
         await addDoc(collection(db, "location"), {
           address: query,
           lat: location[0],
