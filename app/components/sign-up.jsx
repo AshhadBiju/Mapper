@@ -4,14 +4,15 @@ import { Input, Link, Button } from "@nextui-org/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/app/firebase";
 import db from "@/app/firebase";
-import { addDoc, collection, setDoc } from "firebase/firestore";
-
+import { doc, collection, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 export default function Signup() {
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
-  //   const [error, setError] = useState("");
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -21,17 +22,23 @@ export default function Signup() {
     }
     try {
       await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
-      console.log("User registered successfully!");
       const user = auth.currentUser;
       console.log(user);
       if (user) {
-        await addDoc(collection(db, "Users", user.uid), {
-          email: user.signupEmail,
+        await setDoc(doc(db, "Users", user.uid), {
+          email: signupEmail,
           name: signupName,
         });
       }
+      console.log("User registered successfully!");
+      toast.success("User registered successfully ! You mag login now", {
+        position: "top-center",
+      });
     } catch (error) {
       console.log(error.message);
+      toast.warning(error.message, {
+        position: "top-center",
+      });
     }
   };
 
@@ -87,6 +94,7 @@ export default function Signup() {
           Sign up to enter Mapper
         </Button>
       </div>
+      <ToastContainer />
     </form>
   );
 }

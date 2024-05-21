@@ -30,4 +30,5 @@ isSupported().then((supported) => {
   }
 });
 export const auth = getAuth(app);
-export default getFirestore();
+const firestore = getFirestore(app);
+export default firestore;

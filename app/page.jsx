@@ -1,7 +1,7 @@
 "use client";
 import { React, useState } from "react";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+
 import {
   Tabs,
   Tab,
@@ -16,6 +16,7 @@ import Image from "next/image";
 import mapBg from "@/public/images/map-bg.svg";
 import Login from "@/app/components/login";
 import Signup from "@/app/components/sign-up";
+
 export default function Home() {
   const [selected, setSelected] = useState("login");
   const notify = () => toast("Here is your toast.");
@@ -64,10 +65,6 @@ export default function Home() {
               </CardBody>
             </Card>
           </div>
-        </div>
-        <div>
-          <button onClick={notify}>Make me a toast</button>
-          <Toaster />
         </div>
       </section>
     </main>

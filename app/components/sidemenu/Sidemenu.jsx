@@ -50,8 +50,8 @@ export default function App() {
       <NavbarMenu className="z-[99999999999999999999] top-44 md:w-96 w-full overflow-scroll">
         <h1 className="font-medium text-xl">Recent History</h1>
         {locationData.length > 0 ? (
-          locationData.map((locationDataItem) => (
-            <NavbarMenuItem key={locationDataItem.id}>
+          locationData.map((locationDataItem, index) => (
+            <NavbarMenuItem key={index}>
               <div className="flex justify-between items-center w-full">
                 <span>{locationDataItem.address}</span>
                 <Button
