@@ -17,27 +17,29 @@ export default function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     if (signupPassword !== signupConfirmPassword) {
-      console.log("Passwords do not match");
+      toast.warning("Passwords don't match", {
+        position: "top-center",
+      });
       return;
     }
 
     try {
       await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
       const user = auth.currentUser;
-      console.log(user);
+
       if (user) {
         await setDoc(doc(db, "Users", user.uid), {
           email: signupEmail,
           name: signupName,
         });
       }
-      console.log("User registered successfully!");
-      toast.success("User registered successfully ! You mag login now", {
+
+      toast.success("Registered successfully ! You mag login now", {
         position: "top-center",
       });
     } catch (error) {
-      console.log(error.message);
-      toast.warning(error.message, {
+      const errorMessage = error.message.replace(/firebase: /i, "");
+      toast.warning(errorMessage, {
         position: "top-center",
       });
     }

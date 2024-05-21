@@ -33,7 +33,7 @@ export default function Login() {
         password
       );
       const token = await userCredential.user.getIdToken();
-      console.log("token:", token);
+      // console.log("token:", token);
       localStorage.setItem("token", token);
       toast.success("Login Success", {
         position: "top-center",
@@ -41,7 +41,8 @@ export default function Login() {
         onClose: () => router.push("/map"),
       });
     } catch (error) {
-      toast.warning("Login Failed", {
+      const errorMessage = error.message.replace(/firebase: /i, "");
+      toast.warning(errorMessage, {
         position: "top-center",
       });
     }

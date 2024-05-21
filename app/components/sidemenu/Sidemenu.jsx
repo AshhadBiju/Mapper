@@ -60,7 +60,7 @@ export default function App() {
           />
         </NavbarContent>
 
-        <NavbarMenu className="z-[99999999999999999999] top-44 md:w-96 w-full overflow-scroll">
+        <NavbarMenu className="z-[99999999999999999999] top-44 md:w-96 w-full overflow-y-auto rounded-2xl">
           <h1 className="font-medium text-xl">Recent History</h1>
           {locationData.length > 0 ? (
             locationData.map((locationDataItem, index) => (
