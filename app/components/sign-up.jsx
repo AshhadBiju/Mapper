@@ -1,29 +1,47 @@
-import { useState } from "react";
-import {
-  Tabs,
-  Tab,
-  Input,
-  Link,
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-} from "@nextui-org/react";
+"use client";
+import { useState, useEffect } from "react";
+import { Input, Link, Button } from "@nextui-org/react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/app/firebase";
+import db from "@/app/firebase";
+import { addDoc, collection, setDoc } from "firebase/firestore";
 
 export default function Signup() {
   const [signupName, setSignupName] = useState("");
   const [signupEmail, setSignupEmail] = useState("");
   const [signupPassword, setSignupPassword] = useState("");
   const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
+  //   const [error, setError] = useState("");
 
-  console.log(signupName);
-  console.log(signupEmail);
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    if (signupPassword !== signupConfirmPassword) {
+      console.log("Passwords do not match");
+      return;
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, signupEmail, signupPassword);
+      console.log("User registered successfully!");
+      const user = auth.currentUser;
+      console.log(user);
+      if (user) {
+        await addDoc(collection(db, "Users", user.uid), {
+          email: user.signupEmail,
+          name: signupName,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" onSubmit={handleSignup}>
+      {/* {error && <p className="text-red-500">{error}</p>} */}
       <Input
         isRequired
         placeholder="Enter your name"
-        type="password"
+        type="text"
         size="lg"
         value={signupName}
         onChange={(e) => setSignupName(e.target.value)}
@@ -53,17 +71,19 @@ export default function Signup() {
         onChange={(e) => setSignupConfirmPassword(e.target.value)}
       />
       <p className="text-center text-xl">
-        Already have an account ?
-        <Link
-          size="lg"
-          onPress={() => setSelected("login")}
-          className="ml-2 cursor-pointer hover:text-blue-900"
-        >
+        Already have an account?
+        <Link size="lg" className="ml-2 cursor-pointer hover:text-blue-900">
           Login
         </Link>
       </p>
       <div className="flex gap-2 justify-end">
-        <Button fullWidth color="primary" className="text-2xl " size="md">
+        <Button
+          fullWidth
+          color="primary"
+          className="text-2xl"
+          size="md"
+          type="submit"
+        >
           Sign up to enter Mapper
         </Button>
       </div>

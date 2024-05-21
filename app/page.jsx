@@ -1,6 +1,7 @@
 "use client";
 import { React, useState } from "react";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 import {
   Tabs,
   Tab,
@@ -17,6 +18,7 @@ import Login from "@/app/components/login";
 import Signup from "@/app/components/sign-up";
 export default function Home() {
   const [selected, setSelected] = useState("login");
+  const notify = () => toast("Here is your toast.");
   return (
     <main className=" max-h-screen">
       <section className="flex flex-col md:flex-row md:gap-x-4 gap-y-4 h-screen w-full md:p-4 px-4 pt-0 pb-4">
@@ -62,6 +64,10 @@ export default function Home() {
               </CardBody>
             </Card>
           </div>
+        </div>
+        <div>
+          <button onClick={notify}>Make me a toast</button>
+          <Toaster />
         </div>
       </section>
     </main>
