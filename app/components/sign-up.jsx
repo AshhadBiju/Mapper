@@ -44,7 +44,6 @@ export default function Signup() {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSignup}>
-      {/* {error && <p className="text-red-500">{error}</p>} */}
       <Input
         isRequired
         placeholder="Enter your name"

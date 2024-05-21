@@ -41,9 +41,8 @@ export default function App() {
   const handleLogout = () => {
     const logoutConfirmed = window.confirm("Are you sure you want to logout?");
     if (logoutConfirmed) {
-      // Clear token from localStorage
       localStorage.removeItem("token");
-      // Redirect to the homepage
+
       router.push("/");
     }
   };
@@ -86,7 +85,6 @@ export default function App() {
             </NavbarMenuItem>
           )}
 
-          {/* Logout Button */}
           <NavbarMenuItem>
             <Button auto light size="md" onClick={handleLogout}>
               Logout

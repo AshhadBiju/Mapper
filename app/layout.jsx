@@ -1,4 +1,3 @@
-// import { Inter } from "next/font/google";
 import { Montserrat } from "next/font/google";
 import Provider from "@/app/components/NextUIProvider";
 import "./globals.css";
