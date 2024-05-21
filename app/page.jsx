@@ -29,10 +29,12 @@ export default function Home() {
 
   return (
     <main className=" max-h-screen">
-      <section className="flex flex-col md:flex-row md:gap-x-4  mt-[-51px] md:mt-0 gap-y-4 h-screen w-full md:p-4 px-4 pt-0 pb-4">
+      <section className="flex flex-col md:flex-row md:gap-x-4  mt-[-31px] md:mt-0 gap-y-11 h-screen w-full md:p-4 px-4 pt-0 pb-4">
         <div className="bg-white md:bg-blue-500 w-full md:w-[50%] flex justify-center items-center rounded-3xl">
           <div className=" text-3xl md:text-5xl  text-blue-500 md:text-white flex md:flex-col justify-center flex-col-reverse items-center">
-            <div className="flex justify-center">Welcome to Mapper</div>
+            <div className="flex justify-center mt-[-60px] md:mt-0">
+              Welcome to Mapper
+            </div>
             <Image
               src={mapBg}
               alt="map goes here"
