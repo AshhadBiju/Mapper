@@ -13,7 +13,8 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import mapBg from "@/public/images/map-bg.svg";
-import Login from "./components/login";
+import Login from "@/app/components/login";
+import Signup from "@/app/components/sign-up";
 export default function Home() {
   const [selected, setSelected] = useState("login");
   // LOGIN
@@ -103,7 +104,8 @@ export default function Home() {
                     title="Sign up"
                     className="text-2xl md:text-3xl m-2"
                   >
-                    <form className="flex flex-col gap-4">
+                    <Signup />
+                    {/* <form className="flex flex-col gap-4">
                       <Input
                         isRequired
                         placeholder="Enter your name"
@@ -158,7 +160,7 @@ export default function Home() {
                           Sign up to enter Mapper
                         </Button>
                       </div>
-                    </form>
+                    </form> */}
                   </Tab>
                 </Tabs>
               </CardBody>

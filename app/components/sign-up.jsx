@@ -10,43 +10,61 @@ import {
   CardHeader,
 } from "@nextui-org/react";
 
-export default function Login() {
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+export default function Signup() {
+  const [signupName, setSignupName] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
 
-  console.log(loginEmail);
-  console.log(loginPassword);
+  console.log(signupName);
+  console.log(signupEmail);
   return (
     <form className="flex flex-col gap-4">
+      <Input
+        isRequired
+        placeholder="Enter your name"
+        type="password"
+        size="lg"
+        value={signupName}
+        onChange={(e) => setSignupName(e.target.value)}
+      />
       <Input
         isRequired
         placeholder="Enter your email"
         type="email"
         size="lg"
-        value={loginEmail}
-        onChange={(e) => setLoginEmail(e.target.value)}
+        value={signupEmail}
+        onChange={(e) => setSignupEmail(e.target.value)}
       />
       <Input
         isRequired
-        placeholder="Enter your password"
+        placeholder="Enter Password"
         type="password"
         size="lg"
-        value={loginPassword}
-        onChange={(e) => setLoginPassword(e.target.value)}
+        value={signupPassword}
+        onChange={(e) => setSignupPassword(e.target.value)}
+      />
+      <Input
+        isRequired
+        placeholder="Confirm password"
+        type="password"
+        size="lg"
+        value={signupConfirmPassword}
+        onChange={(e) => setSignupConfirmPassword(e.target.value)}
       />
       <p className="text-center text-xl">
-        Need to create an account ?
+        Already have an account ?
         <Link
           size="lg"
-          onPress={() => setSelected("sign-up")}
-          className="ml-2 cursor-pointer hover:text-blue-600"
+          onPress={() => setSelected("login")}
+          className="ml-2 cursor-pointer hover:text-blue-900"
         >
-          Sign up
+          Login
         </Link>
       </p>
       <div className="flex gap-2 justify-end">
-        <Button fullWidth color="primary" className="text-2xl" size="md">
-          Map your way in
+        <Button fullWidth color="primary" className="text-2xl " size="md">
+          Sign up to enter Mapper
         </Button>
       </div>
     </form>
