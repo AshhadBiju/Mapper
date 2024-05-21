@@ -123,24 +123,6 @@ export default function Map() {
     }
   }, [position]);
 
-  // const fetchLocationByQuery = async (query) => {
-  //   const url = `http://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
-  //     query
-  //   )}?key=${mapAPIKey}`;
-  //   try {
-  //     const response = await axios.get(url);
-  //     const resources = response.data.resourceSets[0].resources;
-  //     if (resources.length > 0) {
-  //       const location = resources[0].point.coordinates;
-  //       const newLatLng = { lat: location[0], lng: location[1] };
-  //       setPosition(newLatLng);
-  //     } else {
-  //       console.error("No location found for the query:", query);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching location by query:", error);
-  //   }
-  // };
   const fetchLocationByQuery = async (query) => {
     const url = `http://dev.virtualearth.net/REST/v1/Locations/${encodeURIComponent(
       query
