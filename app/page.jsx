@@ -13,9 +13,18 @@ import {
 } from "@nextui-org/react";
 import Image from "next/image";
 import mapBg from "@/public/images/map-bg.svg";
-
-export default function Login() {
+import Login from "./components/login";
+export default function Home() {
   const [selected, setSelected] = useState("login");
+  // LOGIN
+  // const [loginEmail, setLoginEmail] = useState("");
+  // const [loginPassword, setLoginPassword] = useState("");
+
+  // SIGN UP
+  // const [signupName, setSignupName] = useState("");
+  // const [signupEmail, setSignupEmail] = useState("");
+  // const [signupPassword, setSignupPassword] = useState("");
+  // const [signupConfirmPassword, setSignupConfirmPassword] = useState("");
 
   return (
     <main className=" max-h-screen">
@@ -49,18 +58,23 @@ export default function Login() {
                     title="Login"
                     className="text-2xl md:text-3xl m-2"
                   >
-                    <form className="flex flex-col gap-4">
+                    <Login />
+                    {/* <form className="flex flex-col gap-4">
                       <Input
                         isRequired
                         placeholder="Enter your email"
                         type="email"
                         size="lg"
+                        value={loginEmail}
+                        onChange={(e) => setLoginEmail(e.target.value)}
                       />
                       <Input
                         isRequired
                         placeholder="Enter your password"
                         type="password"
                         size="lg"
+                        value={loginPassword}
+                        onChange={(e) => setLoginPassword(e.target.value)}
                       />
                       <p className="text-center text-xl">
                         Need to create an account ?
@@ -82,7 +96,7 @@ export default function Login() {
                           Map your way in
                         </Button>
                       </div>
-                    </form>
+                    </form> */}
                   </Tab>
                   <Tab
                     key="sign-up"
@@ -95,24 +109,34 @@ export default function Login() {
                         placeholder="Enter your name"
                         type="password"
                         size="lg"
+                        value={signupName}
+                        onChange={(e) => setSignupName(e.target.value)}
                       />
                       <Input
                         isRequired
                         placeholder="Enter your email"
                         type="email"
                         size="lg"
+                        value={signupEmail}
+                        onChange={(e) => setSignupEmail(e.target.value)}
                       />
                       <Input
                         isRequired
                         placeholder="Enter Password"
                         type="password"
                         size="lg"
+                        value={signupPassword}
+                        onChange={(e) => setSignupPassword(e.target.value)}
                       />
                       <Input
                         isRequired
                         placeholder="Confirm password"
                         type="password"
                         size="lg"
+                        value={signupConfirmPassword}
+                        onChange={(e) =>
+                          setSignupConfirmPassword(e.target.value)
+                        }
                       />
                       <p className="text-center text-xl">
                         Already have an account ?
