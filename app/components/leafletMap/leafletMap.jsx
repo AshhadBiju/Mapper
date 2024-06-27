@@ -37,15 +37,6 @@ export default function Map() {
   const [searchQuery, setSearchQuery] = useState("");
   const mapAPIKey = process.env.NEXT_PUBLIC_BING_MAPS_API_KEY;
 
-  // const customIcon = L.icon({
-  //   iconUrl: markerIconPng,
-  //   shadowUrl: markerShadowPng,
-  //   iconSize: [25, 41],
-  //   iconAnchor: [12, 41],
-  //   popupAnchor: [1, -34],
-  //   shadowSize: [41, 41],
-  // });
-
   function DraggableMarker({ position, setPosition }) {
     const [draggable, setDraggable] = useState(false);
     const markerRef = useRef(null);

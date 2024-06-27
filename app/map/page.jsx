@@ -32,7 +32,7 @@ export default function Map() {
   }
 
   return (
-    <main className="h-full flex md:flex-row flex-col gap-x-4 gap-y-4">
+    <main className="h-full flex md:flex-row flex-col">
       <div className="w-full">
         <DynamicMap />
       </div>
